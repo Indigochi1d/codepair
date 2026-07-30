@@ -1,0 +1,201 @@
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from "@nestjs/common";
+import {
+	ApiBadRequestResponse,
+	ApiBearerAuth,
+	ApiBody,
+	ApiCreatedResponse,
+	ApiFoundResponse,
+	ApiNotFoundResponse,
+	ApiOkResponse,
+	ApiOperation,
+	ApiParam,
+	ApiTags,
+	ApiUnauthorizedResponse,
+} from "@nestjs/swagger";
+import { HttpExceptionResponse } from "src/utils/types/http-exception-response.type";
+import { AuthorizedRequest } from "src/utils/types/req.type";
+import { CreateInvitationTokenDto } from "./dto/create-invitation-token.dto";
+import { CreateWorkspaceDto } from "./dto/create-workspace.dto";
+import { JoinWorkspaceDto } from "./dto/join-workspace.dto";
+import { UpdateWorkspaceOrderDto } from "./dto/update-workspace-order.dto";
+import { UpdateWorkspaceTitleDto } from "./dto/update-workspace-title.dto";
+import { CreateInvitationTokenResponse } from "./types/create-inviation-token-response.type";
+import { CreateWorkspaceResponse } from "./types/create-workspace-response.type";
+import { FindWorkspaceResponse } from "./types/find-workspace-response.type";
+import { FindWorkspacesResponse } from "./types/find-workspaces-response.type";
+import { JoinWorkspaceResponse } from "./types/join-workspace-response.type";
+import { UpdateWorkspaceTitleResponse } from "./types/update-workspace-title-response.type";
+import { WorkspacesService } from "./workspaces.service";
+import { DeleteWorkspaceResponse } from "./types/delete-workspace-response.type";
+
+@ApiTags("Workspaces")
+@ApiBearerAuth()
+@Controller("workspaces")
+export class WorkspacesController {
+	constructor(private workspacesService: WorkspacesService) {}
+
+	@Post()
+	@ApiOperation({
+		summary: "Create a Workspace",
+		description: "Create a workspace with the title.",
+	})
+	@ApiBody({ type: CreateWorkspaceDto })
+	@ApiCreatedResponse({ type: CreateWorkspaceResponse })
+	async create(
+		@Req() req: AuthorizedRequest,
+		@Body() createWorkspaceDto: CreateWorkspaceDto
+	): Promise<CreateWorkspaceResponse> {
+		return this.workspacesService.create(req.user.id, createWorkspaceDto.title);
+	}
+
+	@Get(":workspace_slug")
+	@ApiOperation({
+		summary: "Retrieve a Workspace",
+		description: "If the user has the access permissions, return a workspace.",
+	})
+	@ApiFoundResponse({ type: FindWorkspaceResponse })
+	@ApiNotFoundResponse({
+		type: HttpExceptionResponse,
+		description: "The workspace does not exist, or the user lacks the appropriate permissions.",
+	})
+	async findOne(
+		@Req() req: AuthorizedRequest,
+		@Param("workspace_slug") workspaceSlug: string
+	): Promise<FindWorkspaceResponse> {
+		return this.workspacesService.findOneBySlug(req.user.id, encodeURI(workspaceSlug));
+	}
+
+	@Get("")
+	@ApiOperation({
+		summary: "Retrieve All Workspaces",
+		description: "Return all user's workspaces ordered by their position.",
+	})
+	@ApiFoundResponse({ type: FindWorkspacesResponse })
+	async findMany(@Req() req: AuthorizedRequest): Promise<FindWorkspacesResponse> {
+		return this.workspacesService.findMany(req.user.id);
+	}
+
+	@Post(":workspace_id/invite-token")
+	@ApiOperation({
+		summary: "Create a Invitation Token",
+		description: "Create a inviation token using JWT.",
+	})
+	@ApiParam({
+		name: "workspace_id",
+		description: "ID of workspace to create invitation token",
+	})
+	@ApiOkResponse({
+		type: CreateInvitationTokenResponse,
+	})
+	@ApiNotFoundResponse({
+		type: HttpExceptionResponse,
+		description: "The workspace does not exist, or the user lacks the appropriate permissions.",
+	})
+	async createInvitationToken(
+		@Req() req: AuthorizedRequest,
+		@Param("workspace_id") workspaceId: string,
+		@Body() createInvitationTokenDto: CreateInvitationTokenDto
+	): Promise<CreateInvitationTokenResponse> {
+		return this.workspacesService.createInvitationToken(
+			req.user.id,
+			workspaceId,
+			createInvitationTokenDto.expiredAt
+		);
+	}
+
+	@Post("join")
+	@ApiOperation({
+		summary: "Join to the Workspace",
+		description: "Join to the workspace using JWT invitation token.",
+	})
+	@ApiOkResponse({
+		type: JoinWorkspaceResponse,
+	})
+	@ApiUnauthorizedResponse({
+		type: HttpExceptionResponse,
+		description: "Invitation token is invalid or expired.",
+	})
+	@ApiNotFoundResponse({
+		description: "The workspace does not exist.",
+		type: HttpExceptionResponse,
+	})
+	async join(
+		@Req() req: AuthorizedRequest,
+		@Body() joinWorkspaceDto: JoinWorkspaceDto
+	): Promise<JoinWorkspaceResponse> {
+		return this.workspacesService.join(req.user.id, joinWorkspaceDto.invitationToken);
+	}
+
+	@Patch("order")
+	@ApiOperation({
+		summary: "Set workspace order",
+		description: "Replace the entire order of the user's workspaces.",
+	})
+	@ApiBody({ type: UpdateWorkspaceOrderDto })
+	@ApiOkResponse()
+	@ApiNotFoundResponse({
+		type: HttpExceptionResponse,
+		description: "Some workspaces not found, or the user lacks the appropriate permissions.",
+	})
+	async updateWorkspaceOrder(
+		@Req() req: AuthorizedRequest,
+		@Body() updateWorkspaceOrderDto: UpdateWorkspaceOrderDto
+	): Promise<void> {
+		return this.workspacesService.updateWorkspaceOrder(
+			req.user.id,
+			updateWorkspaceOrderDto.workspaceIds
+		);
+	}
+
+	@Patch(":workspace_id/title")
+	@ApiOperation({
+		summary: "Update Workspace Title",
+		description: "Update the title of an existing workspace.",
+	})
+	@ApiParam({
+		name: "workspace_id",
+		description: "ID of workspace to update",
+	})
+	@ApiBody({ type: UpdateWorkspaceTitleDto })
+	@ApiOkResponse({ type: UpdateWorkspaceTitleResponse })
+	@ApiNotFoundResponse({
+		type: HttpExceptionResponse,
+		description: "Workspace not found, or the user lacks the appropriate permissions.",
+	})
+	async updateTitle(
+		@Req() req: AuthorizedRequest,
+		@Param("workspace_id") workspaceId: string,
+		@Body() updateWorkspaceTitleDto: UpdateWorkspaceTitleDto
+	): Promise<UpdateWorkspaceTitleResponse> {
+		return this.workspacesService.updateTitle(
+			req.user.id,
+			workspaceId,
+			updateWorkspaceTitleDto.title
+		);
+	}
+
+	@Delete(":workspace_id")
+	@ApiOperation({
+		summary: "Delete Workspace",
+		description: "Delete an existing workspace.",
+	})
+	@ApiParam({
+		name: "workspace_id",
+		description: "ID of workspace to delete",
+	})
+	@ApiOkResponse({ type: DeleteWorkspaceResponse })
+	@ApiNotFoundResponse({
+		type: HttpExceptionResponse,
+		description: "Workspace not found, or the user lacks the appropriate permissions.",
+	})
+	@ApiBadRequestResponse({
+		type: HttpExceptionResponse,
+		description: "Cannot delete the only remaining workspace for the user.",
+	})
+	async remove(
+		@Req() req: AuthorizedRequest,
+		@Param("workspace_id") workspaceId: string
+	): Promise<DeleteWorkspaceResponse> {
+		return this.workspacesService.remove(req.user.id, workspaceId);
+	}
+}

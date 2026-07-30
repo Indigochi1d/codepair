@@ -7,6 +7,150 @@ and CodePair adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-07-02
+
+### Fixed
+
+- Fix Yorkie auth webhook failures and bump up @yorkie-js/sdk to v0.7.12 by @hackerwins in https://github.com/yorkie-team/codepair/pull/605
+
+### Changed
+
+- Align .nvmrc with supported Node.js versions by @hyunji1117 in https://github.com/yorkie-team/codepair/pull/603
+
+## [0.2.2] - 2026-04-27
+
+### Changed
+
+- Bump up @yorkie-js/sdk to v0.7.7 by @hackerwins in https://github.com/yorkie-team/codepair/pull/597
+- Apply team docs pattern by @hackerwins in https://github.com/yorkie-team/codepair/pull/594
+
+## [0.2.0] - 2026-01-29
+
+### Added
+
+- Implement RAG system with Qdrant vector database by @kokodak in https://github.com/yorkie-team/codepair/pull/580
+- Remove score threshold from vector search by @kokodak in https://github.com/yorkie-team/codepair/pull/581
+
+## [0.1.49] - 2026-01-23
+
+### Added
+
+- Enhance Yorkie Intelligence to support OpenAI-compatible providers by @emplam27 in https://github.com/yorkie-team/codepair/pull/578
+
+### Changed
+
+- Bump up backend libs by @hackerwins in https://github.com/yorkie-team/codepair/pull/574
+- Refact frontend architecture by @JOOHOJANG in https://github.com/yorkie-team/codepair/pull/577
+
+## [0.1.48] - 2026-01-16
+
+### Fixed
+
+- Fix invalid redirection to check user access by @hackerwins in https://github.com/yorkie-team/codepair/pull/572
+
+## [0.1.47] - 2026-01-09
+
+### Fixed
+
+- Apply Vim keybindings for Yorkie undo/redo by @hackerwins in https://github.com/yorkie-team/codepair/pull/569
+- Adjust Workspace Layout max width based on drawer state by @hackerwins in https://github.com/yorkie-team/codepair/pull/568
+
+## [0.1.46] - 2026-01-06
+
+### Added
+
+- Add settings page and simple styling for mobile by @hackerwins in https://github.com/yorkie-team/codepair/pull/565
+
+## [0.1.45] - 2025-12-16
+
+### Added
+
+- Introduce Multi-User Undo/Redo for Collaborative Editing by @JOOHOJANG in https://github.com/yorkie-team/codepair/pull/563
+
+## [0.1.44] - 2025-12-12
+
+### Added
+
+- Add Revision History Feature by @hackerwins in https://github.com/yorkie-team/codepair/pull/561
+
+## [0.1.43] - 2025-11-28
+
+### Added
+
+- Add Tag feature frontend for document management in Workspaces by @yeonthusiast in https://github.com/yorkie-team/codepair/pull/548
+- Add Clipboard Copy Functionality For Code Blocks In View Mode by @Indigochi1d in https://github.com/yorkie-team/codepair/pull/513
+- Implement Workspaces Delete by @Banal972 in https://github.com/yorkie-team/codepair/pull/534
+- Add automatic redirect to last accessed workspace by @LeeWxx in https://github.com/yorkie-team/codepair/pull/539
+
+### Changed
+
+- Replace deprecated ListItemSecondaryAction with simple box by @witch-factory in https://github.com/yorkie-team/codepair/pull/540
+- Bump up Yorkie to v0.6.39 by @kokodak in https://github.com/yorkie-team/codepair/pull/555
+- Hide workspace delete button in production mode by @kokodak in https://github.com/yorkie-team/codepair/pull/556
+
+### Fixed
+
+- Fix workspace disappearing issue by @LeeWxx in https://github.com/yorkie-team/codepair/pull/547
+- Fix text selection issues with newline and split pane resizing by @ggyuchive in https://github.com/yorkie-team/codepair/pull/541
+- Prevent code highlighting if no language provided by @blurfx in https://github.com/yorkie-team/codepair/pull/552
+
+## [0.1.42] - 2025-09-02
+
+### Added
+
+- Implement workspace reordering with drag and drop by @LeeWxx in https://github.com/yorkie-team/codepair/pull/522
+
+### Changed
+
+- Update CI workflows Node.js support (20.x / 22.x / 24.x) by @ahyeon-github in https://github.com/yorkie-team/codepair/pull/538
+- Reflect recent AdminAPI changes to CodePair by @kokodak in https://github.com/yorkie-team/codepair/pull/542
+- Bump up Yorkie to v0.6.28 by @kokodak in https://github.com/yorkie-team/codepair/pull/544
+
+## [0.1.41] - 2025-08-20
+
+### Added
+
+- Add ability to change workspace name by @ezcolin2 in https://github.com/yorkie-team/codepair/pull/526
+
+### Changed
+
+- Enhance GitHub OAuth setup guide by @witch-factory in https://github.com/yorkie-team/codepair/pull/529
+- Migrate build system from electron-builder to electron-vite by @Banal972 in https://github.com/yorkie-team/codepair/pull/519
+- Bump up Yorkie to v0.6.26 by @hackerwins in https://github.com/yorkie-team/codepair/pull/535
+
+### Fixed
+
+- Decode workspace.slug to handle encoded Unicode characters properly by @SANGHEEJEONG in https://github.com/yorkie-team/codepair/pull/532
+
+## [0.1.40] - 2025-08-12
+
+### Fixed
+
+- Bump up Yorkie to v0.6.25 by @hackerwins in https://github.com/yorkie-team/codepair/pull/527
+
+## [0.1.39] - 2025-08-06
+
+### Added
+
+- Add Desktop CI by @JIWEON-JEONG in https://github.com/yorkie-team/codepair/pull/518
+- Implement Table View design in Figma by @yeonthusiast in https://github.com/yorkie-team/codepair/pull/521
+
+### Changed
+
+- Migrate deprecated MUI Grid to the new Grid2 component by @yeonthusiast in https://github.com/yorkie-team/codepair/pull/512
+- Close Go backend migration initiative and continue with NestJS architecture by @window9u in https://github.com/yorkie-team/codepair/pull/520
+- Bump up Yorkie to v0.6.24 by @hackerwins in https://github.com/yorkie-team/codepair/pull/524
+
+### Fixed
+
+- Fix header layout on small screens and AvatarGroup overflow by @KMSstudio in https://github.com/yorkie-team/codepair/pull/517
+
+## [0.1.38] - 2025-07-28
+
+### Changed
+
+- Bump up Yorkie to v0.6.22 by @kokodak in https://github.com/yorkie-team/codepair/pull/515
+
 ## [0.1.37] - 2025-07-26
 
 ### Added

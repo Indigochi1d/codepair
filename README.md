@@ -23,10 +23,17 @@ CodePair provides the following features:
 
 ## Packages
 
-This repository contains multiple packages/modules that make up our project. Each package/module is contained in its own directory within this repository.
+This repository contains multiple packages that make up our project, organized as a pnpm workspace under `packages/`.
 
-- **Frontend**: Contains the frontend code of our application. Please refer to [frontend/README.md](frontend/README.md) for detailed information on setting up and running the frontend.
-- **Backend**: Contains the backend code of our application. Please refer to [backend/README.md](backend/README.md) for detailed information on setting up and running the backend.
+- **`@codepair/frontend`**: App shell — routing, auth, workspace, editor slot. See [packages/frontend/README.md](packages/frontend/README.md) for details.
+- **`@codepair/backend`**: NestJS API server. See [packages/backend/README.md](packages/backend/README.md) for details.
+- **`@codepair/codemirror`**: CodeMirror 6 editor with Yorkie sync, toolbar, preview. Self-contained vertical slice.
+- **`@codepair/ui`**: Shared types (`EditorPort`, `EditorModeType`, `PresenceInfo`) and pure UI components.
+
+## Node.js Version Support
+
+- **Supported:** **20.x (LTS)**, **22.x (Active LTS)**, **24.x (Current)**
+- **Dropped:** **18.x** (End-of-life)
 
 ## Getting Started with Development
 
@@ -45,10 +52,10 @@ We offer two options. Choose the one that best suits your needs:
 
 ### 3-1. Frontend Development Only Mode
 
-1. Update your `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` to `./backend/docker/docker-compose-full.yml`.
+1. Update your `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` to `./packages/backend/docker/docker-compose-full.yml`.
 
    ```bash
-   vi ./backend/docker/docker-compose-full.yml
+   vi ./packages/backend/docker/docker-compose-full.yml
 
    # In the file, update the following values:
    # GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
@@ -56,10 +63,10 @@ We offer two options. Choose the one that best suits your needs:
    GITHUB_CLIENT_SECRET: "your_github_client_secret_here"
    ```
 
-2. Run `./backend/docker/docker-compose-full.yml`.
+2. Run `./packages/backend/docker/docker-compose-full.yml`.
 
    ```bash
-   docker-compose -f ./backend/docker/docker-compose-full.yml up -d
+   docker-compose -f ./packages/backend/docker/docker-compose-full.yml up -d
    ```
 
 3. Install dependencies from the root.
@@ -78,10 +85,10 @@ We offer two options. Choose the one that best suits your needs:
 
 ### 3-2. Full Stack Development Mode
 
-1. Update your `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` to `./backend/.env.development`.
+1. Update your `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` to `./packages/backend/.env.development`.
 
    ```bash
-   vi ./backend/.env.development
+   vi ./packages/backend/.env.development
 
    # In the file, update the following values:
    # GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
@@ -89,10 +96,10 @@ We offer two options. Choose the one that best suits your needs:
    GITHUB_CLIENT_SECRET=your_github_client_secret_here
    ```
 
-2. Run `./backend/docker/docker-compose.yml`.
+2. Run `./packages/backend/docker/docker-compose.yml`.
 
    ```bash
-   docker-compose -f ./backend/docker/docker-compose.yml up -d
+   docker-compose -f ./packages/backend/docker/docker-compose.yml up -d
    ```
 
 3. Install dependencies from the root.
@@ -101,18 +108,35 @@ We offer two options. Choose the one that best suits your needs:
    pnpm install
    ```
 
-4. Run the Backend application and the Frontend application:
+4. Set up the Yorkie webhook:
+
+   ```bash
+   pnpm setup:webhook
+   ```
+
+5. Run the Backend application and the Frontend application:
 
    ```bash
    pnpm backend start:dev
    pnpm frontend dev
    ```
 
-5. Visit http://localhost:5173 to enjoy your CodePair.
+6. Visit http://localhost:5173 to enjoy your CodePair.
 
 ## Contributing
 
 See [CONTRIBUTING](CONTRIBUTING.md) for details on submitting patches and the contribution workflow.
+
+## Documentation
+
+- [docs/design/](docs/design/README.md) — Architectural design documents
+- [docs/tasks/](docs/tasks/README.md) — Task tracking (active and archived)
+- [docs/editor-port-architecture.md](docs/editor-port-architecture.md) — Editor port architecture overview
+- [packages/frontend/design/](packages/frontend/design/README.md) — Frontend-specific design docs
+- [packages/backend/design/](packages/backend/design/README.md) — Backend-specific design docs
+- [CHANGELOG.md](CHANGELOG.md) — Release notes
+- [MAINTAINING.md](MAINTAINING.md) — Release and maintenance procedures
+- [CLAUDE.md](CLAUDE.md) — Agent instructions for AI-assisted development
 
 ## Contributors ✨
 
